@@ -1,0 +1,63 @@
+openapi: 3.0.1
+info:
+  title: Spring Boot JWT Demo
+  version: v0.1
+servers:
+  - url: 'http://localhost:8080'
+    description: Localhost server
+    
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      operationId: login
+      summary: Authenticate and get your own token!
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: 'pacaccini.tavares'
+                password:
+                  type: string
+                  example: 'ubirajara'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjE0NzM1MjIyLCJ1c2VybmFtZSI6InBhY2FjY2luaS50YXZhcmVzIn0.YUef1jv7X5JsqNedoEXlTl7SeYR4JSFExop0GJPU3qk'
+        '401':
+          description: Bad credentials
+          
+  /api/protected:
+    get:
+      tags:
+        - Protected
+      operationId: securityTest
+      summary: Try out your token!
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'I am protected, dear user 1996'
+        '401':
+          description: Unauthorized
+          
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
