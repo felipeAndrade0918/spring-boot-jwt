@@ -1,7 +1,6 @@
 package com.felipeandrade0918.springjwt.config.security.filter;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,19 +13,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.felipeandrade0918.springjwt.config.security.JwtService;
 import com.felipeandrade0918.springjwt.dto.LoginRequest;
 import com.felipeandrade0918.springjwt.model.User;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private String jwtSecret;
+	private JwtService jwtService;
 	
-	public AuthenticationFilter(AuthenticationManager authenticationManager, String jwtSecret) {
+	public AuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
 		setAuthenticationManager(authenticationManager);
-		this.jwtSecret = jwtSecret;
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -49,11 +47,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			Authentication authResult) throws IOException, ServletException {
 		User user = (User) authResult.getPrincipal();
 		
-		String token = JWT.create()
-		.withSubject(user.getId().toString())
-		.withClaim("email", user.getUsername())
-		.withExpiresAt(new Date(System.currentTimeMillis() + 20_000))
-		.sign(Algorithm.HMAC256(jwtSecret));
+		String token = jwtService.createToken(user);
 		
 		response.getWriter().write(token);
 		response.getWriter().flush();

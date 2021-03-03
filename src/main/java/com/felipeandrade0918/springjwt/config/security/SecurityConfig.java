@@ -1,6 +1,5 @@
 package com.felipeandrade0918.springjwt.config.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsService userDetailsService;
 	
-	@Value("${jwt.secret}")
-	private String JWT_SECRET;
+	private JwtService jwtService;
 	
-	public SecurityConfig(UserDetailsService userDetailsService) {
+	public SecurityConfig(UserDetailsService userDetailsService, JwtService jwtService) {
 		super();
 		this.userDetailsService = userDetailsService;
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -46,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			.cors()
 		.and()
-			.addFilter(new AuthenticationFilter(authenticationManager(), JWT_SECRET))
-			.addFilter(new AuthorizationFilter(authenticationManager(), JWT_SECRET))
+			.addFilter(new AuthenticationFilter(authenticationManager(), jwtService))
+			.addFilter(new AuthorizationFilter(authenticationManager(), jwtService))
 			.exceptionHandling()
 			.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 		.and()

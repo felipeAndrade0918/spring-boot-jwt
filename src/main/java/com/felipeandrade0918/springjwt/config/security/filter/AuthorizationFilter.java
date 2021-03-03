@@ -13,16 +13,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.felipeandrade0918.springjwt.config.security.JwtService;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-	private String jwtSecret;
+	private JwtService jwtService;
 	
-	public AuthorizationFilter(AuthenticationManager authenticationManager, String jwtSecret) {
+	public AuthorizationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
 		super(authenticationManager);
-		this.jwtSecret = jwtSecret;
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -31,10 +30,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 		String authorizationHeader = request.getHeader("Authorization");
 		
 		if (authorizationHeader != null) {
-			Long userId = Long.valueOf(JWT.require(Algorithm.HMAC256(jwtSecret))
-			.build()
-			.verify(authorizationHeader.replace("Bearer ", ""))
-			.getSubject());
+			Long userId = Long.valueOf(jwtService.retrieveSubject(authorizationHeader));
 			
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(token);

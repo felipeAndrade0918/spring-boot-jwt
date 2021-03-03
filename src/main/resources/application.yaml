@@ -16,6 +16,8 @@ spring:
     console:
       enabled: true
 
-jwt.secret: 022a742e-936c-4a28-9a97-db6c16a98e5e
+jwt:
+  secret: 022a742e-936c-4a28-9a97-db6c16a98e5e
+  expiration-in-milliseconds: 20_000
 
 spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS: false
