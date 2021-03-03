@@ -1,0 +1,1 @@
+INSERT INTO user (name, username, password, enabled) values ('Pacaccini Tavares', 'pacaccini.tavares', '$2a$10$K9SgDT2QRcxWSq1iMVLVteoj1vwSmb1NHjlPgRzHwblD.GiskzAz2', true);
