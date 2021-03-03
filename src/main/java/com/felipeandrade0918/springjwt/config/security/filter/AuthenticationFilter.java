@@ -49,6 +49,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		
 		String token = jwtService.createToken(user);
 		
+		response.setHeader("content-type", "text/plain");
 		response.getWriter().write(token);
 		response.getWriter().flush();
 	}
