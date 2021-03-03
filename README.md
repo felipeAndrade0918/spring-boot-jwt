@@ -4,8 +4,6 @@ A Spring Boot application using JWT security.
 
 ## Getting Started
 
-Just clone this repository and open it using Eclipse.
-
 ### Prerequisites
 
 This project currently requires Java 11 and it's using Spring Boot 2.4.3.
