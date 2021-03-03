@@ -25,6 +25,8 @@ Upon a successful login, you can try out the secure endpoint.
 
 You can change some JWT settings on the [application.yaml](https://github.com/felipeAndrade0918/spring-boot-jwt/blob/master/src/main/resources/application.yaml) file.
 
+You can access the swagger-ui through the following address: http://localhost:8080/swagger-ui/index.html
+
 ### How is JWT implemented in here?
 
 The main configuration resides in the [SecurityConfig](https://github.com/felipeAndrade0918/spring-boot-jwt/blob/master/src/main/java/com/felipeandrade0918/springjwt/config/security/SecurityConfig.java) class.
